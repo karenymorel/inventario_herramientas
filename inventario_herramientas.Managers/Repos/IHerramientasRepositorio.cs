@@ -2,12 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 using Npgsql;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace inventario_herramientas.Managers.Repos
 {
@@ -33,8 +29,19 @@ namespace inventario_herramientas.Managers.Repos
         {
             using (IDbConnection conn = new NpgsqlConnection(_connectionString))
             {
-                //querysingleordefault te permite devolver null
-                return conn.QuerySingleOrDefault<Herramientas>("SELECT * FROM \"Herramientas\" WHERE \"id_herramienta\" = @Id AND \"eliminada\" = FALSE", new { Id = idHerramienta });
+                string query = @"
+                    SELECT 
+                        h.*, 
+                        ua.""nombre"" AS ""NombreUsuarioAlta"",
+                        um.""nombre"" AS ""NombreUsuarioModificacion"",
+                        ub.""nombre"" AS ""NombreUsuarioBaja""
+                    FROM ""Herramientas"" h
+                    LEFT JOIN ""Usuarios"" ua ON h.""idUsuarioAlta"" = ua.""id_usuario""
+                    LEFT JOIN ""Usuarios"" um ON h.""idUsuarioModificacion"" = um.""id_usuario""
+                    LEFT JOIN ""Usuarios"" ub ON h.""idUsuarioBaja"" = ub.""id_usuario""
+                    WHERE h.""id_herramienta"" = @Id AND h.""eliminada"" = FALSE";
+
+                return conn.QuerySingleOrDefault<Herramientas>(query, new { Id = idHerramienta });
             }
         }
 
@@ -42,7 +49,18 @@ namespace inventario_herramientas.Managers.Repos
         {
             using (IDbConnection conn = new NpgsqlConnection(_connectionString))
             {
-                string query = "SELECT * FROM \"Herramientas\" WHERE \"eliminada\" = FALSE";
+                string query = @"
+                    SELECT 
+                        h.*, 
+                        ua.""nombre"" AS ""NombreUsuarioAlta"",
+                        um.""nombre"" AS ""NombreUsuarioModificacion"",
+                        ub.""nombre"" AS ""NombreUsuarioBaja""
+                    FROM ""Herramientas"" h
+                    LEFT JOIN ""Usuarios"" ua ON h.""idUsuarioAlta"" = ua.""id_usuario""
+                    LEFT JOIN ""Usuarios"" um ON h.""idUsuarioModificacion"" = um.""id_usuario""
+                    LEFT JOIN ""Usuarios"" ub ON h.""idUsuarioBaja"" = ub.""id_usuario""
+                    WHERE h.""eliminada"" = FALSE";
+
                 return conn.Query<Herramientas>(query);
             }
         }
@@ -51,13 +69,22 @@ namespace inventario_herramientas.Managers.Repos
         {
             using (IDbConnection db = new NpgsqlConnection(_connectionString))
             {
-                string query = @"INSERT INTO ""Herramientas"" (""nombre"", ""descripcion"", ""cantidad"", ""categoria_id"", ""ubicacion_id"", ""fecha_modificacion"", ""estado_id"", ""eliminada"") 
-                         VALUES (@nombre, @descripcion, @cantidad, @categoria_id, @ubicacion_id, @fecha_modificacion, @estado_id, false)
-                         RETURNING ""id_herramienta"";";
+                herramienta.fechaAlta = DateTime.Now;
+
+                string query = @"INSERT INTO ""Herramientas"" (
+                                    ""nombre"", ""descripcion"", ""cantidad"", ""categoria_id"", ""ubicacion_id"", 
+                                    ""fecha_modificacion"", ""estado_id"", ""eliminada"", 
+                                    ""idUsuarioAlta"", ""fechaAlta""
+                                 ) 
+                                 VALUES (
+                                    @nombre, @descripcion, @cantidad, @categoria_id, @ubicacion_id, 
+                                    @fecha_modificacion, @estado_id, false, 
+                                    @idUsuarioAlta, @fechaAlta
+                                 )
+                                 RETURNING ""id_herramienta"";";
 
                 int nuevoId = db.QuerySingle<int>(query, herramienta);
-                herramienta.id_herramienta = nuevoId;
-                return herramienta.id_herramienta;
+                return nuevoId;
             }
         }
 
@@ -65,13 +92,17 @@ namespace inventario_herramientas.Managers.Repos
         {
             using (IDbConnection db = new NpgsqlConnection(_connectionString))
             {
-                string query = @"UPDATE ""Herramientas"" 
-                         SET ""nombre"" = @nombre, ""descripcion"" = @descripcion, ""cantidad"" = @cantidad, 
-                             ""categoria_id"" = @categoria_id, ""ubicacion_id"" = @ubicacion_id, 
-                             ""fecha_modificacion"" = @fecha_modificacion, ""estado_id"" = @estado_id 
-                         WHERE ""id_herramienta"" = @id_herramienta";
-
+                herramienta.fechaModificacion = DateTime.Now;
                 herramienta.id_herramienta = idHerramienta;
+
+                string query = @"UPDATE ""Herramientas"" 
+                                 SET ""nombre"" = @nombre, ""descripcion"" = @descripcion, ""cantidad"" = @cantidad, 
+                                     ""categoria_id"" = @categoria_id, ""ubicacion_id"" = @ubicacion_id, 
+                                     ""fecha_modificacion"" = @fecha_modificacion, ""estado_id"" = @estado_id,
+                                     ""idUsuarioModificacion"" = @idUsuarioModificacion,
+                                     ""fechaModificacion"" = @fechaModificacion
+                                 WHERE ""id_herramienta"" = @id_herramienta";
+
                 return db.Execute(query, herramienta) == 1;
             }
         }
@@ -81,11 +112,18 @@ namespace inventario_herramientas.Managers.Repos
             using (IDbConnection db = new NpgsqlConnection(_connectionString))
             {
                 string query = @"UPDATE ""Herramientas"" 
-                         SET ""eliminada"" = true 
-                         WHERE ""id_herramienta"" = @Id";
-                return db.Execute(query, new { Id = idHerramienta }) == 1;
+                                 SET ""eliminada"" = true,
+                                     ""idUsuarioBaja"" = @IdBaja,
+                                     ""fechaBaja"" = @FechaBaja
+                                 WHERE ""id_herramienta"" = @IdHerramienta";
+
+                return db.Execute(query, new
+                {
+                    IdHerramienta = idHerramienta,
+                    IdBaja = idUsuarioBaja,
+                    FechaBaja = DateTime.Now
+                }) == 1;
             }
         }
     }
 }
-

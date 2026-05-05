@@ -8,6 +8,7 @@ using inventario_herramientas.Managers.Repos;
 using Dapper;
 using inventario_herramientas.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace inventario_herramientas.Web.Controllers
 {
@@ -44,10 +45,12 @@ namespace inventario_herramientas.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                int idUsuarioAlta = 0; // hay que obtener esto despues me fijo como
-                _herramientasManager.CrearHerramienta(herramienta, idUsuarioAlta);
+                var idUsuarioActual = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                _herramientasManager.CrearHerramienta(herramienta, idUsuarioActual);
                 return RedirectToAction("Index", "Home");
             }
+            CargarDatosDropdown(); 
             return View(herramienta);
         }
 
@@ -71,44 +74,25 @@ namespace inventario_herramientas.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                int idUsuarioModificacion = 1; // Obtén el ID del usuario logueado
-                if (_herramientasManager.ModificarHerramienta(id, herramienta, idUsuarioModificacion))
+                var idUsuarioActual = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                if (_herramientasManager.ModificarHerramienta(id, herramienta, idUsuarioActual))
                 {
                     return RedirectToAction("Index", "Home");
                 }
                 return NotFound();
             }
-            return View(herramienta);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            var herramienta = _herramientasManager.GetHerramienta(id);
-            if (herramienta == null)
-            {
-                return NotFound();
-            }
+            CargarDatosDropdown(); 
             return View(herramienta);
         }
 
         public IActionResult DeleteConfirmed(int id)
         {
-            int idUsuarioBaja = 0; // obtener despuesss
-            _herramientasManager.EliminarHerramienta(id, idUsuarioBaja);
+            var idUsuarioActual = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            // Verificar si la herramienta fue eliminada correctamente
-            var herramienta = _herramientasManager.GetHerramienta(id);
+            _herramientasManager.EliminarHerramienta(id, idUsuarioActual);
 
-            if (herramienta == null) // Si es null, se eliminó correctamente
-            {
-                return RedirectToAction("Index", "Home"); // Redirige al index de Home
-            }
-            else // Si NO es null, algo falló en la eliminación
-            {
-                return NotFound();
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         // PRIVADO pq es para dropdowns de Estado y Ubicación

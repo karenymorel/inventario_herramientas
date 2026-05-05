@@ -2,9 +2,6 @@
 using inventario_herramientas.Managers.Repos;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 
 namespace inventario_herramientas.Managers.Managers
@@ -20,7 +17,7 @@ namespace inventario_herramientas.Managers.Managers
 
     public class HerramientasManager : IHerramientasManager
     {
-        private IHerramientasRepositorio _repo;
+        private readonly IHerramientasRepositorio _repo;
 
         public HerramientasManager(IHerramientasRepositorio repo)
         {
@@ -39,19 +36,26 @@ namespace inventario_herramientas.Managers.Managers
 
         public int CrearHerramienta(Herramientas herramienta, int idUsuarioAlta)
         {
-            herramienta.fecha_modificacion = DateTime.Now;
+
+            herramienta.idUsuarioAlta = idUsuarioAlta; 
+            herramienta.fecha_modificacion = DateTime.Now; 
+
             return _repo.CrearHerramienta(herramienta);
         }
 
         public bool ModificarHerramienta(int idHerramienta, Herramientas herramienta, int idUsuarioModificacion)
         {
+
+            herramienta.idUsuarioModificacion = idUsuarioModificacion; 
             herramienta.fecha_modificacion = DateTime.Now;
+
             return _repo.ModificarHerramienta(idHerramienta, herramienta);
         }
 
         public bool EliminarHerramienta(int idHerramienta, int idUsuarioBaja)
         {
-            return _repo.EliminarHerramienta(idHerramienta, idUsuarioBaja); // lo cambie por borrado lógico
+
+            return _repo.EliminarHerramienta(idHerramienta, idUsuarioBaja);
         }
     }
 }
