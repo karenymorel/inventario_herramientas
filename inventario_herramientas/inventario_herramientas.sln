@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventario_herramientas.Web", "inventario_herramientas.Web.csproj", "{37001BE8-412B-482B-8B35-55954BA99505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventario_herramientas.Managers", "..\inventario_herramientas.Managers\inventario_herramientas.Managers.csproj", "{564781F4-75E6-44A4-AAB5-B63819F700AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37001BE8-412B-482B-8B35-55954BA99505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37001BE8-412B-482B-8B35-55954BA99505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37001BE8-412B-482B-8B35-55954BA99505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37001BE8-412B-482B-8B35-55954BA99505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{564781F4-75E6-44A4-AAB5-B63819F700AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{564781F4-75E6-44A4-AAB5-B63819F700AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{564781F4-75E6-44A4-AAB5-B63819F700AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{564781F4-75E6-44A4-AAB5-B63819F700AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8ABD3701-3A13-4596-8B60-0536108634BC}
+	EndGlobalSection
+EndGlobal

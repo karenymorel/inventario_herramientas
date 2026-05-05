@@ -1,0 +1,139 @@
+﻿@model inventario_herramientas.Managers.Entidades.Herramientas
+
+@{
+    ViewData["Title"] = "Editar Herramienta";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link href="~/css/index.css" rel="stylesheet" />
+}
+
+<!-- Header de página -->
+<div class="page-header">
+    <div class="page-header-info">
+        <h1 class="page-title">Editar Herramienta</h1>
+        <p class="page-subtitle">Modificando los datos de: <strong>@Model.nombre</strong></p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-controller="Home" asp-action="Index" class="btn-secondary-custom">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Volver al listado
+        </a>
+    </div>
+</div>
+
+<!-- Contenedor del Formulario -->
+<div class="form-wrapper">
+    <form asp-action="Edit" asp-route-id="@Model.id_herramienta" method="post" class="custom-form" id="formDemo">
+        <div asp-validation-summary="ModelOnly" class="text-danger-custom"></div>
+        <input type="hidden" asp-for="id_herramienta" />
+
+        <div class="form-grid">
+            <!-- Nombre -->
+            <div class="form-group-custom">
+                <label asp-for="nombre" class="form-label-custom">Nombre de la herramienta</label>
+                <div class="input-icon-wrapper">
+                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    <input asp-for="nombre" class="form-control-custom input-with-icon" />
+                </div>
+                <span asp-validation-for="nombre" class="text-danger-custom"></span>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="form-group-custom">
+                <label asp-for="cantidad" class="form-label-custom">Cantidad en stock</label>
+                <input asp-for="cantidad" class="form-control-custom" />
+                <span asp-validation-for="cantidad" class="text-danger-custom"></span>
+            </div>
+
+            <!-- Categoría -->
+            <div class="form-group-custom">
+                <label for="categoria_id" class="form-label-custom">Categoría</label>
+                <select asp-for="categoria_id" class="form-control-custom select-custom" asp-items="@(ViewBag.Categorias as IEnumerable<SelectListItem>)">
+                    <option value="">Seleccione una categoría</option>
+                </select>
+                <span asp-validation-for="categoria_id" class="text-danger-custom"></span>
+            </div>
+
+            <!-- Ubicación -->
+            <div class="form-group-custom">
+                <label for="ubicacion_id" class="form-label-custom">Ubicación física</label>
+                <select asp-for="ubicacion_id" class="form-control-custom select-custom" asp-items="@(ViewBag.Ubicaciones as IEnumerable<SelectListItem>)">
+                    <option value="">Seleccione una ubicación</option>
+                </select>
+                <span asp-validation-for="ubicacion_id" class="text-danger-custom"></span>
+            </div>
+
+            <!-- Estado -->
+            <div class="form-group-custom">
+                <label for="estado_id" class="form-label-custom">Estado actual</label>
+                <select asp-for="estado_id" class="form-control-custom select-custom" asp-items="@(ViewBag.Estados as IEnumerable<SelectListItem>)">
+                    <option value="">Seleccione un estado</option>
+                </select>
+                <span asp-validation-for="estado_id" class="text-danger-custom"></span>
+            </div>
+
+            <!-- Fecha Modificación -->
+            <div class="form-group-custom">
+                <label asp-for="fecha_modificacion" class="form-label-custom">Fecha de modificación</label>
+                <input asp-for="fecha_modificacion" type="date" class="form-control-custom" />
+                <span asp-validation-for="fecha_modificacion" class="text-danger-custom"></span>
+            </div>
+
+            <!-- Descripción -->
+            <div class="form-group-custom form-group-full">
+                <label asp-for="descripcion" class="form-label-custom">Descripción detallada</label>
+                <textarea asp-for="descripcion" class="form-control-custom textarea-custom"></textarea>
+                <span asp-validation-for="descripcion" class="text-danger-custom"></span>
+            </div>
+        </div>
+
+        <div class="form-actions-footer">
+            <!-- BOTÓN BLOQUEADO (Llama al modal en vez de enviar el form) -->
+            <button type="button" onclick="mostrarModalDemo()" class="btn-primary-custom btn-large">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Guardar Cambios
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal de Modo Demo -->
+<div id="modalDemo" class="demo-overlay">
+    <div class="demo-modal">
+        <div class="demo-icon-wrapper">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+        </div>
+        <h3 class="demo-title">Acción Bloqueada</h3>
+        <p class="demo-text">Estás viendo una versión <strong>Demo para Portfolio</strong>. Para proteger la integridad de los datos, las funciones de modificación están deshabilitadas.</p>
+        <button type="button" onclick="cerrarModalDemo()" class="btn-primary-custom btn-demo-close">Entendido</button>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function mostrarModalDemo() {
+            document.getElementById('modalDemo').classList.add('show');
+        }
+        function cerrarModalDemo() {
+            document.getElementById('modalDemo').classList.remove('show');
+        }
+    </script>
+}

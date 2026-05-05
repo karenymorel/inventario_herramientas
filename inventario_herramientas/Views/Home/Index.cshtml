@@ -1,0 +1,216 @@
+﻿@model IEnumerable<inventario_herramientas.Managers.Entidades.Herramientas>
+@{
+    ViewData["Title"] = "Listado de Herramientas";
+    var categorias = new Dictionary<int, string> {
+        { 1, "Eléctricas" }, { 2, "Manuales" }, { 3, "Protección Personal" }
+    };
+
+    var ubicaciones = new Dictionary<int, string> {
+        { 1, "Compartimiento A" }, { 2, "Almacén B" }, { 3, "Taller Reparaciones" }
+    };
+
+    var estados = new Dictionary<int, string> {
+        { 1, "Disponible" }, { 2, "En Uso" }, { 3, "Dañada" }, { 4, "En Reparación" }
+    };
+}
+
+@section Styles {
+    <link href="~/css/index.css" rel="stylesheet" />
+}
+
+<!-- Header de página -->
+<div class="page-header">
+    <div class="page-header-info">
+        <h1 class="page-title">Herramientas</h1>
+        <p class="page-subtitle">Gestión completa del inventario disponible</p>
+    </div>
+    <div class="page-header-actions">
+        @if (User.HasClaim("admin", "Administradora"))
+        {
+            <a asp-controller="Herramientas" asp-action="Create" class="btn-primary-custom">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Nueva herramienta
+            </a>
+        }
+    </div>
+</div>
+
+<!-- DASHBOARD (Métricas rápidas) -->
+<div class="dashboard-cards">
+    <!-- Tarjeta 1: Total -->
+    <div class="stat-card">
+        <div class="stat-icon stat-blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Total Modelos</span>
+            <span class="stat-value">@Model.Count()</span>
+        </div>
+    </div>
+
+    <!-- Tarjeta 2: En Reparación -->
+    <div class="stat-card">
+        <div class="stat-icon stat-orange">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">En Reparación</span>
+            <span class="stat-value">@Model.Count(x => x.estado_id == 4)</span>
+        </div>
+    </div>
+
+    <!-- Tarjeta 3: Stock Crítico -->
+    <div class="stat-card">
+        <div class="stat-icon stat-red">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Stock Crítico (< 5)</span>
+            <span class="stat-value">@Model.Count(x => x.cantidad < 5)</span>
+        </div>
+    </div>
+</div>
+
+<!-- BARRA DE BÚSQUEDA -->
+<div class="search-wrapper">
+    <div class="search-input-container">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" class="form-control-custom input-with-icon" placeholder="Buscar por nombre, descripción, categoría o estado..." />
+    </div>
+</div>
+
+<!-- Tabla -->
+<div class="table-wrapper">
+    <div class="table-responsive-scroll">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Stock</th>
+                    <th>Categoría</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Modificación</th>
+                    <th class="th-actions">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="cell-bold">@item.nombre</span>
+                        </td>
+                        <td class="cell-muted" title="@item.descripcion">@item.descripcion</td>
+                        <td>
+                            <span class="badge-qty">@item.cantidad</span>
+                        </td>
+                        <td>
+                            <span class="text-category">@(categorias.ContainsKey(item.categoria_id) ? categorias[item.categoria_id] : "Otra")</span>
+                        </td>
+                        <td class="cell-location">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-location">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            @(ubicaciones.ContainsKey(item.ubicacion_id) ? ubicaciones[item.ubicacion_id] : "Desconocida")
+                        </td>
+                        <td>
+                            @{
+                                var estadoNombre = estados.ContainsKey(item.estado_id) ? estados[item.estado_id] : "Desconocido";
+                                var claseColor = item.estado_id switch
+                                {
+                                    1 => "status-success",
+                                    2 => "status-info",  
+                                    3 => "status-danger",  
+                                    4 => "status-warning",
+                                    _ => "status-default"
+                                };
+                            }
+                            <span class="badge-status @claseColor">
+                                <span class="status-dot"></span>
+                                @estadoNombre
+                            </span>
+                        </td>
+                        <td class="cell-date">@String.Format("{0:dd/MM/yy}", item.fecha_modificacion)</td>
+
+                        <td>
+                            <div class="action-group">
+                                <a asp-action="Edit" asp-controller="Herramientas" asp-route-id="@item.id_herramienta" class="btn-action btn-edit" title="Editar">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                    </svg>
+                                </a>
+                                <a href="javascript:void(0)" onclick="mostrarModalDemo()" class="btn-action btn-delete" title="Eliminar">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6" />
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                        <line x1="10" y1="11" x2="10" y2="17" />
+                                        <line x1="14" y1="11" x2="14" y2="17" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+   
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de Modo Demo -->
+<div id="modalDemo" class="demo-overlay">
+    <div class="demo-modal">
+        <div class="demo-icon-wrapper">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+        </div>
+        <h3 class="demo-title">Acción Bloqueada</h3>
+        <p class="demo-text">Estás viendo una versión <strong>Demo</strong>. Para proteger la integridad de los datos, ciertas funciones están deshabilitadas.</p>
+        <button onclick="cerrarModalDemo()" class="btn-primary-custom btn-demo-close">Aceptar</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function mostrarModalDemo() {
+            document.getElementById('modalDemo').classList.add('show');
+        }
+
+        function cerrarModalDemo() {
+            document.getElementById('modalDemo').classList.remove('show');
+        }
+
+        $(document).ready(function(){
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+
+                $(".data-table tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
