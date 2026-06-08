@@ -40,6 +40,8 @@ builder.Services.AddScoped<IHerramientasRepositorio>(_ =>
     return new HerramientasRepositorio(connectionString);
 });
 
+builder.Services.AddHttpClient<GeminiService>();
+
 builder.Services.AddScoped<IUsuariosManager, UsuariosManager>();
 builder.Services.AddScoped<IUsuariosRepositorio>(_ =>
 {

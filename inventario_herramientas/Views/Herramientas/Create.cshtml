@@ -86,9 +86,21 @@
 
             <!-- Descripción (Ocupa las 2 columnas) -->
             <div class="form-group-custom form-group-full">
-                <label asp-for="descripcion" class="form-label-custom">Descripción detallada</label>
-                <textarea asp-for="descripcion" class="form-control-custom textarea-custom" rows="4" placeholder="Añade detalles técnicos, marca, modelo o notas sobre el estado..."></textarea>
-                <span asp-validation-for="descripcion" class="text-danger-custom"></span>
+                <label asp-for="descripcion"
+                       class="form-label-custom">Descripción detallada</label>
+                <div style="display: flex; gap: 10px;">
+                    <textarea asp-for="descripcion" id="descripcion"
+                              class="form-control-custom textarea-custom" rows="4"
+                              placeholder="Añade detalles técnicos..."></textarea>
+                    <button type="button"
+                            onclick="sugerirDescripcionIA(this)"
+                            class="btn-secondary-custom" title="Sugerir con IA"
+                            style="height: fit-content;">
+                        ✨
+                    </button>
+                </div>
+                <span asp-validation-for="descripcion"
+                      class="text-danger-custom"></span>
             </div>
         </div>
 
@@ -126,23 +138,47 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        // Nueva función: Primero valida campos vacíos, si está todo OK, tira el cartel de Demo
         function validarYMostrarModal() {
-            var form = $('#formDemo'); // Asegúrate que tu <form> tenga id="formDemo"
+            var form = $('#formDemo'); 
 
             // Forzar a jQuery Validation a revisar los campos
             form.validate();
 
             if (form.valid()) {
-                // Si todos los campos están llenos correctamente, mostramos el modal demo
                 document.getElementById('modalDemo').classList.add('show');
-            } else {
-                // Si faltan campos, no hacemos nada, jQuery mostrará las letras rojas automáticamente
             }
         }
 
         function cerrarModalDemo() {
             document.getElementById('modalDemo').classList.remove('show');
+        }
+
+        async function sugerirDescripcionIA(btn) {
+            const nombre = $('#nombre').val();
+
+            if (!nombre) {
+                alert("Coloque el nombre de la herramienta primero.");
+                return;
+            }
+
+            const originalText = btn.innerText;
+            btn.innerText = "⏳";
+
+            try {
+                const response = await fetch(`/Herramientas/SugerirDescripcion?nombre=${encodeURIComponent(nombre)}`);
+                const data = await response.json();
+
+                if (data.descripcion) {
+                    $('#descripcion').val(data.descripcion);
+                } else {
+                    alert("La IA no pudo generar una descripción. Probá con un nombre más claro.");
+                }
+            } catch (error) {
+                console.error("Error llamando a la IA:", error);
+                alert("Ocurrió un error al intentar conectar con el servicio de IA.");
+            } finally {
+                btn.innerText = originalText;
+            }
         }
     </script>
 }

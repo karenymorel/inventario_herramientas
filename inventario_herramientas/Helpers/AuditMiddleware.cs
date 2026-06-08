@@ -16,14 +16,10 @@ namespace inventario_herramientas.Web.Helpers
         public async Task InvokeAsync(HttpContext
 context, LogAuditoriaRepositorio logRepo)
         {
-            if (context.Request.Method == "POST" ||
-context.Request.Method == "PUT" ||
-context.Request.Method == "DELETE")
+            if (context.Request.Method == "POST" || context.Request.Method == "PUT" || context.Request.Method == "DELETE")
             {
-                var usuario =
-context.User.Identity?.Name ?? "Anónimo";
-                var accion =
-$"{context.Request.Method} {context.Request.Path}";
+                var usuario = context.User.Identity?.Name ?? "Anónimo";
+                var accion = $"{context.Request.Method} {context.Request.Path}";
 
                 var log = new LogAuditoria
                 {

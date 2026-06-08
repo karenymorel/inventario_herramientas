@@ -15,11 +15,14 @@ namespace inventario_herramientas.Web.Controllers
     public class HerramientasController : Controller
     {
         private readonly IHerramientasManager _herramientasManager;
+        private readonly GeminiService _geminiService;
 
         // recordar: constructor inyecta manager
-        public HerramientasController(IHerramientasManager herramientasManager)
+        public HerramientasController(IHerramientasManager
+herramientasManager, GeminiService geminiService)
         {
             _herramientasManager = herramientasManager;
+            _geminiService = geminiService;
         }
 
         [Authorize]
@@ -95,7 +98,15 @@ namespace inventario_herramientas.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // PRIVADO pq es para dropdowns de Estado y Ubicación
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> SugerirDescripcion(string
+        nombre)
+        {
+            var descripcionSugerida = await _geminiService.GenerarDescripcion(nombre);
+            return Json(new { descripcion = descripcionSugerida });
+        }
+
         private void CargarDatosDropdown()
         {
             // viewbag es mostrador de vista dinamico!
