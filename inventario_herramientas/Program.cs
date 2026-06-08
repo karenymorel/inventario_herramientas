@@ -4,6 +4,7 @@ using inventario_herramientas.Managers.Managers;
 using inventario_herramientas.Managers.Repos;
 using Microsoft.Extensions.Configuration;
 using inventario_herramientas.Web.Helpers;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,25 +20,55 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
+
 builder.Services.AddControllersWithViews();
 
 // Aca se agregan los managers, repos = [inyeccion de dependencias]
 builder.Services.AddScoped<IHerramientasManager, HerramientasManager>();
-builder.Services.AddScoped<IHerramientasRepositorio>(
-    _ => new HerramientasRepositorio(builder.Configuration["Db:ConnectionString"]));
+builder.Services.AddScoped<IHerramientasRepositorio>(_ =>
+{
+    var connectionString = builder.Configuration["Db:ConnectionString"];
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new InvalidOperationException("Database connection string 'Db:ConnectionString' is not configured.");
+    }
+    return new HerramientasRepositorio(connectionString);
+});
 
 builder.Services.AddScoped<IUsuariosManager, UsuariosManager>();
 builder.Services.AddScoped<IUsuariosRepositorio>(_ =>
-    new UsuariosRepositorio(builder.Configuration["Db:ConnectionString"]));
+{
+    var connectionString = builder.Configuration["Db:ConnectionString"];
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new InvalidOperationException("Database connection string 'Db:ConnectionString' is not configured.");
+    }
+    return new UsuariosRepositorio(connectionString);
+});
+builder.Services.AddScoped<LogAuditoriaRepositorio>(_ =>
+{
+    var connectionString = builder.Configuration["Db:ConnectionString"];
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new InvalidOperationException("Database connection string 'Db:ConnectionString' is not configured.");
+    }
+    return new LogAuditoriaRepositorio(connectionString);
+});
 
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -48,6 +79,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<AuditMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
