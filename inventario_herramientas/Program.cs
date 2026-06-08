@@ -5,6 +5,8 @@ using inventario_herramientas.Managers.Repos;
 using Microsoft.Extensions.Configuration;
 using inventario_herramientas.Web.Helpers;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +64,7 @@ builder.Services.AddScoped<LogAuditoriaRepositorio>(_ =>
     return new LogAuditoriaRepositorio(connectionString);
 });
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 var app = builder.Build();
 
@@ -76,6 +79,15 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+var supportedCultures = new[] { "en-US", "es-AR" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("es-AR")
+    .AddSupportedCultures(supportedCultures
+)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
 
