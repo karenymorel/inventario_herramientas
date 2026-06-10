@@ -155,3 +155,33 @@
         background-color: rgba(11, 13, 17, 0.95);
     }
 }
+
+
+.btn-guest-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    padding: 14px;
+    background-color: transparent;
+    color: #8B95AD;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 550;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+    .btn-guest-link:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: #8B95AD;
+        color: #E4E8F1;
+        transform: translateY(-2px);
+    }
+
+    .btn-guest-link:active {
+        transform: translateY(0);
+    }

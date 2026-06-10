@@ -16,8 +16,6 @@ namespace inventario_herramientas.Controllers
             _logger = logger;
             _herramientasManager = herramientasManager;
         }
-
-        [Authorize]
         public IActionResult Index()
         {
             var herramientas = _herramientasManager.GetHerramientas(); 

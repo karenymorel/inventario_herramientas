@@ -299,6 +299,55 @@ body {
         transform: translateY(0);
     }
 
+/* Botón Dashboard (Estilo Azul/Índigo sutil) */
+.btn-dashboard {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: rgba(99, 102, 241, 0.1);
+    color: #818CF8;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 550;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+    .btn-dashboard:hover {
+        background-color: rgba(99, 102, 241, 0.18);
+        color: #A5B4FC;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+        transform: translateY(-1px);
+    }
+
+.btn-success-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 550;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+    .btn-success-custom:hover {
+        background-color: rgba(34, 197, 94, 0.18);
+        color: #4ADE80;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+        transform: translateY(-1px);
+    }
+
 /* ========================================
    TABLA
    ======================================== */
@@ -312,8 +361,10 @@ body {
 
 .data-table {
     width: 100%;
+    min-width: 1050px;
     border-collapse: collapse;
     font-size: 13.5px;
+    table-layout: auto;
 }
 
     .data-table thead {
@@ -334,7 +385,7 @@ body {
 
 .th-actions {
     text-align: center;
-    width: 100px;
+    width: 140px;
 }
 
 .data-table tbody tr {
@@ -364,11 +415,14 @@ body {
 
 .cell-muted {
     color: var(--text-muted);
-    max-width: 220px;
-    white-space: nowrap;
+    max-width: 260px; 
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
+    white-space: normal; 
+    line-height: 1.4;
 }
 
 .cell-date {

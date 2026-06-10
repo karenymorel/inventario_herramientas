@@ -107,6 +107,28 @@ herramientasManager, GeminiService geminiService)
             return Json(new { descripcion = descripcionSugerida });
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult ExportarCSV()
+        {
+            var herramientas = _herramientasManager.GetHerramientas();
+            var builder = new System.Text.StringBuilder();
+
+            // Encabezados del CSV
+            builder.AppendLine("ID,Nombre,Descripcion,Stock,Categoria_ID,Estado_ID,FechaModificacion");
+
+            foreach (var h in herramientas)
+            {
+                // Limpiamos la descripción por si tiene comas que rompan el CSV
+                var descLimpia = string.IsNullOrEmpty(h.descripcion) ? "" : h.descripcion.Replace("\"", "\"\"").Replace("\n", " ");
+
+                builder.AppendLine($"{h.id_herramienta},\"{h.nombre}\",\"{descLimpia}\",{h.cantidad},{h.categoria_id},{h.estado_id},{h.fecha_modificacion:yyyy-MM-dd}");
+            }
+
+            var fileBytes = System.Text.Encoding.UTF8.GetBytes(builder.ToString());
+            return File(fileBytes, "text/csv", "Reporte_Inventario_Data.csv");
+        }
+
         private void CargarDatosDropdown()
         {
             // viewbag es mostrador de vista dinamico!
