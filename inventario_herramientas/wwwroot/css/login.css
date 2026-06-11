@@ -51,6 +51,7 @@
     z-index: 1;
     text-align: center;
     transform: translateY(-20px); 
+    position: relative;
 }
 
 /* Branding */
@@ -184,4 +185,27 @@
 
     .btn-guest-link:active {
         transform: translateY(0);
+    }
+
+.login-lang-toggle select {
+    background-color: #181B23;
+    color: #E4E8F1; 
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+    .login-lang-toggle select:hover {
+        border-color: #8B95AD;
+        background-color: #1E222D;
+    }
+
+    /* Solución al problema de visibilidad: fuerza el fondo oscuro y texto claro en las opciones */
+    .login-lang-toggle select option {
+        background-color: #181B23; /* Fondo oscuro para desplegar las opciones */
+        color: #E4E8F1; /* Texto claro para las opciones */
     }
