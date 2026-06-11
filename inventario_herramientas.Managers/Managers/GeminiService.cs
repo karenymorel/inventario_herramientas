@@ -28,11 +28,11 @@ namespace inventario_herramientas.Managers.Managers
                     "La API Key de Gemini no está configurada en appsettings.json");
         }
 
-        public async Task<string> GenerarDescripcion(string nombre)
+        public async Task<string> GenerarDescripcion(string promptTextoArmado)
         {
             try
             {
-                var prompt = $"Sos un experto en herramientas industriales. El usuario quiere registrar una herramienta llamada '{nombre}'. Redactá una descripción técnica, profesional y breve (máximo 2 frases). Escribí la descripción directamente.";
+                var prompt = promptTextoArmado;
 
                 var requestBody = new
                 {

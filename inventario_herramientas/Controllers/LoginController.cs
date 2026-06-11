@@ -84,7 +84,7 @@ namespace inventario_herramientas.Web.Controllers
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();
-            return View("LoginIndex");
+            return RedirectToAction("LoginIndex");
         }
 
         // LOGIN ADMIN

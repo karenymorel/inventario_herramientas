@@ -1,144 +1,380 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-	<!-- Login -->
-	<data name="BrandSubtitle" xml:space="preserve"><value>Intelligent Inventory Control System</value></data>
-	<data name="BrandTitle" xml:space="preserve"><value>Industrial Tools Manager</value></data>
-	<data name="GoogleLogin" xml:space="preserve"><value>Continue with Google</value></data>
-	<data name="GuestLogin" xml:space="preserve"><value>Enter as guest</value></data>
-	<data name="LoginHint" xml:space="preserve"><value>Identify yourself to access the panel</value></data>
-	<data name="LoginTitle" xml:space="preserve"><value>Login</value></data>
-	<data name="SecureAccess" xml:space="preserve"><value>Safe access (OAuth 2.0)</value></data>
-
-	<!-- Sidebar -->
-	<data name="Sidebar_Brand" xml:space="preserve"><value>Inventory</value></data>
-	<data name="Sidebar_Greeting" xml:space="preserve"><value>Welcome</value></data>
-	<data name="Sidebar_List" xml:space="preserve"><value>List</value></data>
-	<data name="Sidebar_Create" xml:space="preserve"><value>Create Tool</value></data>
-
-	<!-- Index -->
-	<data name="ListTitle" xml:space="preserve"><value>Tools List</value></data>
-	<data name="PageTitle" xml:space="preserve"><value>Tools</value></data>
-	<data name="PageSubtitle" xml:space="preserve"><value>Complete management of the available inventory</value></data>
-	<data name="DashboardBI" xml:space="preserve"><value>BI Dashboard</value></data>
-	<data name="Title_DashboardBI" xml:space="preserve"><value>View Analytics in Looker Studio</value></data>
-	<data name="ExportCSV" xml:space="preserve"><value>Export CSV</value></data>
-	<data name="NewTool" xml:space="preserve"><value>New</value></data>
-	<data name="TotalModels" xml:space="preserve"><value>Total Models</value></data>
-	<data name="CriticalStock" xml:space="preserve"><value>Critical Stock (&lt; 5)</value></data>
-	<data name="SearchPlaceholder" xml:space="preserve"><value>Search by name, description, category, or status...</value></data>
-	<data name="Header_Name" xml:space="preserve"><value>Name</value></data>
-	<data name="Header_Description" xml:space="preserve"><value>Description</value></data>
-	<data name="Header_Stock" xml:space="preserve"><value>Stock</value></data>
-	<data name="Header_Category" xml:space="preserve"><value>Category</value></data>
-	<data name="Header_Location" xml:space="preserve"><value>Location</value></data>
-	<data name="Header_Status" xml:space="preserve"><value>Status</value></data>
-	<data name="Header_Modification" xml:space="preserve"><value>Modification</value></data>
-	<data name="Header_Actions" xml:space="preserve"><value>Actions</value></data>
-	<data name="Category_Electric" xml:space="preserve"><value>Electrical</value></data>
-	<data name="Category_Manual" xml:space="preserve"><value>Manual</value></data>
-	<data name="Category_PPE" xml:space="preserve"><value>Personal Protective Equipment</value></data>
-	<data name="Category_Other" xml:space="preserve"><value>Other</value></data>
-	<data name="Location_CompA" xml:space="preserve"><value>Compartment A</value></data>
-	<data name="Location_WarehouseB" xml:space="preserve"><value>Warehouse B</value></data>
-	<data name="Location_RepairShop" xml:space="preserve"><value>Repair Shop</value></data>
-	<data name="Location_Worksite" xml:space="preserve"><value>On-site Work</value></data>
-	<data name="Location_Unknown" xml:space="preserve"><value>Unknown</value></data>
-	<data name="Status_Available" xml:space="preserve"><value>Available</value></data>
-	<data name="Status_InUse" xml:space="preserve"><value>In Use</value></data>
-	<data name="Status_Damaged" xml:space="preserve"><value>Damaged</value></data>
-	<data name="Status_InRepair" xml:space="preserve"><value>In Repair</value></data>
-	<data name="Status_Unknown" xml:space="preserve"><value>Unknown</value></data>
-	<data name="Title_Audit" xml:space="preserve"><value>View Audit</value></data>
-	<data name="Title_Edit" xml:space="preserve"><value>Edit</value></data>
-	<data name="Title_Delete" xml:space="preserve"><value>Delete</value></data>
-	<data name="Audit_Title" xml:space="preserve"><value>Audit Log</value></data>
-	<data name="Audit_CreatedBy" xml:space="preserve"><value>Created by</value></data>
-	<data name="Audit_LastModifiedBy" xml:space="preserve"><value>Last Modified by</value></data>
-	<data name="Audit_Close" xml:space="preserve"><value>Close History</value></data>
-	<data name="Demo_Blocked" xml:space="preserve"><value>Action Blocked</value></data>
-	<data name="Demo_Text" xml:space="preserve"><value>You are viewing a &lt;strong&gt;Demo&lt;/strong&gt; version. To protect data integrity, certain features are disabled.</value></data>
-	<data name="Demo_Accept" xml:space="preserve"><value>Accept</value></data>
-	<data name="JS_NoDate" xml:space="preserve"><value>No date</value></data>
-	<data name="JS_NoModifications" xml:space="preserve"><value>No modifications</value></data>
-	<data name="JS_System" xml:space="preserve"><value>System</value></data>
-	<data name="JS_NA" xml:space="preserve"><value>N/A</value></data>
-
-	<!-- Traducciones de datos dinámicos (Nombres DB) -->
-	<data name="Taladro Eléctrico" xml:space="preserve"><value>Electric Drill</value></data>
-	<data name="Sierra Circular" xml:space="preserve"><value>Circular Saw</value></data>
-	<data name="Martillo" xml:space="preserve"><value>Hammer</value></data>
-	<data name="Guantes de Seguridad" xml:space="preserve"><value>Safety Gloves</value></data>
-	<data name="Destornillador" xml:space="preserve"><value>Screwdriver</value></data>
-	<data name="Amoladora Angular" xml:space="preserve"><value>Angle Grinder</value></data>
-	<data name="Cinta Métrica" xml:space="preserve"><value>Tape Measure</value></data>
-	<data name="Casco de Seguridad" xml:space="preserve"><value>Safety Helmet</value></data>
-
-	<!-- Traducciones de datos dinámicos (Descripciones DB) -->
-	<data name="Taladro de alta potencia para trabajos de perforación." xml:space="preserve"><value>High-power drill for drilling work.</value></data>
-	<data name="Sierra eléctrica para cortes precisos en madera." xml:space="preserve"><value>Electric saw for precise wood cuts.</value></data>
-	<data name="Martillo de acero con mango ergonómico." xml:space="preserve"><value>Steel hammer with ergonomic handle.</value></data>
-	<data name="Guantes de protección contra cortes y abrasiones." xml:space="preserve"><value>Protective gloves against cuts and abrasions.</value></data>
-	<data name="Juego de destornilladores de varias puntas." xml:space="preserve"><value>Screwdriver set with multiple tips.</value></data>
-	<data name="Amoladora eléctrica para trabajos de pulido y corte." xml:space="preserve"><value>Electric grinder for polishing and cutting work.</value></data>
-	<data name="Cinta métrica de 5 metros de largo." xml:space="preserve"><value>5-meter long tape measure.</value></data>
-	<data name="Casco para protección de la cabeza." xml:space="preserve"><value>Helmet for head protection.</value></data>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BrandSubtitle" xml:space="preserve">
+    <value>Intelligent Inventory Control System</value>
+  </data>
+  <data name="BrandTitle" xml:space="preserve">
+    <value>Industrial Tools Manager</value>
+  </data>
+  <data name="GoogleLogin" xml:space="preserve">
+    <value>Continue with Google</value>
+  </data>
+  <data name="GuestLogin" xml:space="preserve">
+    <value>Enter as guest</value>
+  </data>
+  <data name="LoginHint" xml:space="preserve">
+    <value>Identify yourself to access the panel</value>
+  </data>
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="SecureAccess" xml:space="preserve">
+    <value>Safe access (OAuth 2.0)</value>
+  </data>
+  <data name="Sidebar_Brand" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="Sidebar_Greeting" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="Sidebar_List" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="Sidebar_Create" xml:space="preserve">
+    <value>Create Tool</value>
+  </data>
+  <data name="ListTitle" xml:space="preserve">
+    <value>Tools List</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="PageSubtitle" xml:space="preserve">
+    <value>Complete management of the available inventory</value>
+  </data>
+  <data name="DashboardBI" xml:space="preserve">
+    <value>BI Dashboard</value>
+  </data>
+  <data name="Title_DashboardBI" xml:space="preserve">
+    <value>View Analytics in Looker Studio</value>
+  </data>
+  <data name="ExportCSV" xml:space="preserve">
+    <value>Export CSV</value>
+  </data>
+  <data name="NewTool" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="TotalModels" xml:space="preserve">
+    <value>Total Models</value>
+  </data>
+  <data name="CriticalStock" xml:space="preserve">
+    <value>Critical Stock (&lt; 5)</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Search by name, description, category, or status...</value>
+  </data>
+  <data name="Header_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Header_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Header_Stock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="Header_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Header_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Header_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Header_Modification" xml:space="preserve">
+    <value>Modification</value>
+  </data>
+  <data name="Header_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Category_Electric" xml:space="preserve">
+    <value>Electrical</value>
+  </data>
+  <data name="Category_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="Category_PPE" xml:space="preserve">
+    <value>Personal Protective Equipment</value>
+  </data>
+  <data name="Category_Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Location_CompA" xml:space="preserve">
+    <value>Compartment A</value>
+  </data>
+  <data name="Location_WarehouseB" xml:space="preserve">
+    <value>Warehouse B</value>
+  </data>
+  <data name="Location_RepairShop" xml:space="preserve">
+    <value>Repair Shop</value>
+  </data>
+  <data name="Location_Worksite" xml:space="preserve">
+    <value>On-site Work</value>
+  </data>
+  <data name="Location_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Status_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Status_InUse" xml:space="preserve">
+    <value>In Use</value>
+  </data>
+  <data name="Status_Damaged" xml:space="preserve">
+    <value>Damaged</value>
+  </data>
+  <data name="Status_InRepair" xml:space="preserve">
+    <value>In Repair</value>
+  </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Title_Audit" xml:space="preserve">
+    <value>View Audit</value>
+  </data>
+  <data name="Title_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Title_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Audit_Title" xml:space="preserve">
+    <value>Audit Log</value>
+  </data>
+  <data name="Audit_CreatedBy" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="Audit_LastModifiedBy" xml:space="preserve">
+    <value>Last Modified by</value>
+  </data>
+  <data name="Audit_Close" xml:space="preserve">
+    <value>Close History</value>
+  </data>
+  <data name="Demo_Blocked" xml:space="preserve">
+    <value>Action Blocked</value>
+  </data>
+  <data name="Demo_Text" xml:space="preserve">
+    <value>You are viewing a &lt;strong&gt;Demo&lt;/strong&gt; version. To protect data integrity, certain features are disabled.</value>
+  </data>
+  <data name="Demo_Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="JS_NoDate" xml:space="preserve">
+    <value>No date</value>
+  </data>
+  <data name="JS_NoModifications" xml:space="preserve">
+    <value>No modifications</value>
+  </data>
+  <data name="JS_System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="JS_NA" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="Taladro Eléctrico" xml:space="preserve">
+    <value>Electric Drill</value>
+  </data>
+  <data name="Sierra Circular" xml:space="preserve">
+    <value>Circular Saw</value>
+  </data>
+  <data name="Martillo" xml:space="preserve">
+    <value>Hammer</value>
+  </data>
+  <data name="Guantes de Seguridad" xml:space="preserve">
+    <value>Safety Gloves</value>
+  </data>
+  <data name="Destornillador" xml:space="preserve">
+    <value>Screwdriver</value>
+  </data>
+  <data name="Amoladora Angular" xml:space="preserve">
+    <value>Angle Grinder</value>
+  </data>
+  <data name="Cinta Métrica" xml:space="preserve">
+    <value>Tape Measure</value>
+  </data>
+  <data name="Casco de Seguridad" xml:space="preserve">
+    <value>Safety Helmet</value>
+  </data>
+  <data name="Taladro de alta potencia para trabajos de perforación." xml:space="preserve">
+    <value>High-power drill for drilling work.</value>
+  </data>
+  <data name="Sierra eléctrica para cortes precisos en madera." xml:space="preserve">
+    <value>Electric saw for precise wood cuts.</value>
+  </data>
+  <data name="Martillo de acero con mango ergonómico." xml:space="preserve">
+    <value>Steel hammer with ergonomic handle.</value>
+  </data>
+  <data name="Guantes de protección contra cortes y abrasiones." xml:space="preserve">
+    <value>Protective gloves against cuts and abrasions.</value>
+  </data>
+  <data name="Juego de destornilladores de varias puntas." xml:space="preserve">
+    <value>Screwdriver set with multiple tips.</value>
+  </data>
+  <data name="Amoladora eléctrica para trabajos de pulido y corte." xml:space="preserve">
+    <value>Electric grinder for polishing and cutting work.</value>
+  </data>
+  <data name="Cinta métrica de 5 metros de largo." xml:space="preserve">
+    <value>5-meter long tape measure.</value>
+  </data>
+  <data name="Casco para protección de la cabeza." xml:space="preserve">
+    <value>Helmet for head protection.</value>
+  </data>
+  <data name="Link_DashboardBI" xml:space="preserve">
+    <value>https://datastudio.google.com/s/mm61BWFCVG0</value>
+  </data>
+	<data name="Almacén Central" xml:space="preserve"><value>Central Warehouse</value></data>
+	<data name="Taller" xml:space="preserve"><value>Workshop</value></data>
+	<data name="Obra 1" xml:space="preserve"><value>Worksite 1</value></data>
+	<data name="Obra 2" xml:space="preserve"><value>Worksite 2</value></data>
+	<data name="Eléctricas - Herramientas eléctricas y equipos motorizados" xml:space="preserve"><value>Electrical - Power tools and motorized equipment</value></data>
+	<data name="Manuales - Herramientas manuales, sin motor" xml:space="preserve"><value>Manual - Hand tools, non-motorized</value></data>
+	<data name="Protección Personal - Equipos de protección y seguridad personal" xml:space="preserve"><value>PPE - Personal protective and safety equipment</value></data>
+	<data name="CreateTitle" xml:space="preserve"><value>Create Tool</value></data>
+	<data name="CreateNewTool" xml:space="preserve"><value>New Tool</value></data>
+	<data name="CreateSubtitle" xml:space="preserve"><value>Add a new asset to the system inventory</value></data>
+	<data name="BackToList" xml:space="preserve"><value>Back to list</value></data>
+	<data name="Label_Name" xml:space="preserve"><value>Tool name</value></data>
+	<data name="Placeholder_Name" xml:space="preserve"><value>E.g.: 800W hammer drill</value></data>
+	<data name="Label_Stock" xml:space="preserve"><value>Stock quantity</value></data>
+	<data name="Label_Category" xml:space="preserve"><value>Category</value></data>
+	<data name="Select_Category" xml:space="preserve"><value>Select a category</value></data>
+	<data name="Label_Location" xml:space="preserve"><value>Physical location</value></data>
+	<data name="Select_Location" xml:space="preserve"><value>Select a location</value></data>
+	<data name="Label_Status" xml:space="preserve"><value>Current status</value></data>
+	<data name="Select_Status" xml:space="preserve"><value>Select a status</value></data>
+	<data name="Label_Date" xml:space="preserve"><value>Registration date</value></data>
+	<data name="Label_Description" xml:space="preserve"><value>Detailed description</value></data>
+	<data name="Placeholder_Description" xml:space="preserve"><value>Add technical details...</value></data>
+	<data name="Title_SuggestAI" xml:space="preserve"><value>Suggest with AI</value></data>
+	<data name="Btn_SaveTool" xml:space="preserve"><value>Save Tool</value></data>
+	<data name="Demo_PortfolioText" xml:space="preserve"><value>You are viewing a &lt;strong&gt;Portfolio Demo&lt;/strong&gt; version. To protect data integrity, record creation is disabled.</value></data>
+	<data name="Demo_Understood" xml:space="preserve"><value>Understood</value></data>
+	<data name="JS_NameRequiredAI" xml:space="preserve"><value>Enter the tool name first.</value></data>
+	<data name="JS_AIFailed" xml:space="preserve"><value>The AI could not generate a description. Try a clearer name.</value></data>
+	<data name="JS_AIError" xml:space="preserve"><value>An error occurred while trying to connect to the AI service.</value></data>
+	<data name="Prompt_AI" xml:space="preserve"><value>You are an expert in industrial tools. The user wants to register a tool named '{0}'. Write a technical, professional, and brief description (maximum 2 sentences). Write the description directly in English.</value></data>
+	<data name="EditTitle" xml:space="preserve"><value>Edit Tool</value></data>
+	<data name="EditTool" xml:space="preserve"><value>Edit Tool</value></data>
+	<data name="ModifyingDataOf" xml:space="preserve"><value>Modifying data for:</value></data>
+	<data name="Label_ModificationDate" xml:space="preserve"><value>Modification date</value></data>
+	<data name="Btn_SaveChanges" xml:space="preserve"><value>Save Changes</value></data>
+	<data name="Demo_EditPortfolioText" xml:space="preserve"><value>You are viewing a &lt;strong&gt;Portfolio Demo&lt;/strong&gt; version. To protect data integrity, modification features are disabled.</value></data>
+	<data name="Sidebar_Logout" xml:space="preserve"><value>Logout</value></data>
 </root>

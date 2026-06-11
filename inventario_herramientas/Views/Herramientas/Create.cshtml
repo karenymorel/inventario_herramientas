@@ -1,7 +1,11 @@
 ﻿@model inventario_herramientas.Managers.Entidades.Herramientas
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using inventario_herramientas.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = "Crear Herramienta";
+    ViewData["Title"] = Localizer["CreateTitle"];
     Layout = "_Layout";
 }
 
@@ -12,8 +16,8 @@
 <!-- Header de página -->
 <div class="page-header">
     <div class="page-header-info">
-        <h1 class="page-title">Nueva Herramienta</h1>
-        <p class="page-subtitle">Agrega un nuevo activo al inventario del sistema</p>
+        <h1 class="page-title">@Localizer["CreateNewTool"]</h1>
+        <p class="page-subtitle">@Localizer["CreateSubtitle"]</p>
     </div>
     <div class="page-header-actions">
         <a asp-controller="Home" asp-action="Index" class="btn-secondary-custom">
@@ -21,7 +25,7 @@
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Volver al listado
+            @Localizer["BackToList"]
         </a>
     </div>
 </div>
@@ -33,86 +37,83 @@
         <div class="form-grid">
             <!-- Nombre -->
             <div class="form-group-custom">
-                <label asp-for="nombre" class="form-label-custom">Nombre de la herramienta</label>
+                <label asp-for="nombre" class="form-label-custom">@Localizer["Label_Name"]</label>
                 <div class="input-icon-wrapper">
                     <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
                     </svg>
-                    <input asp-for="nombre" class="form-control-custom input-with-icon" placeholder="Ej: Taladro percutor 800W" />
+                    <input asp-for="nombre" class="form-control-custom input-with-icon" placeholder="@Localizer["Placeholder_Name"]" />
                 </div>
                 <span asp-validation-for="nombre" class="text-danger-custom"></span>
             </div>
 
             <!-- Cantidad -->
             <div class="form-group-custom">
-                <label asp-for="cantidad" class="form-label-custom">Cantidad en stock</label>
+                <label asp-for="cantidad" class="form-label-custom">@Localizer["Label_Stock"]</label>
                 <input asp-for="cantidad" type="number" min="0" class="form-control-custom" placeholder="0" />
                 <span asp-validation-for="cantidad" class="text-danger-custom"></span>
             </div>
 
             <!-- Categoría -->
             <div class="form-group-custom">
-                <label for="categoria_id" class="form-label-custom">Categoría</label>
+                <label for="categoria_id" class="form-label-custom">@Localizer["Label_Category"]</label>
                 <select asp-for="categoria_id" class="form-control-custom select-custom" asp-items="@(ViewBag.Categorias as IEnumerable<SelectListItem>)">
-                    <option value="">Seleccione una categoría</option>
+                    <option value="">@Localizer["Select_Category"]</option>
                 </select>
                 <span asp-validation-for="categoria_id" class="text-danger-custom"></span>
             </div>
 
             <!-- Ubicación -->
             <div class="form-group-custom">
-                <label for="ubicacion_id" class="form-label-custom">Ubicación física</label>
+                <label for="ubicacion_id" class="form-label-custom">@Localizer["Label_Location"]</label>
                 <select asp-for="ubicacion_id" class="form-control-custom select-custom" asp-items="@(ViewBag.Ubicaciones as IEnumerable<SelectListItem>)">
-                    <option value="">Seleccione una ubicación</option>
+                    <option value="">@Localizer["Select_Location"]</option>
                 </select>
                 <span asp-validation-for="ubicacion_id" class="text-danger-custom"></span>
             </div>
 
             <!-- Estado -->
             <div class="form-group-custom">
-                <label for="estado_id" class="form-label-custom">Estado actual</label>
+                <label for="estado_id" class="form-label-custom">@Localizer["Label_Status"]</label>
                 <select asp-for="estado_id" class="form-control-custom select-custom" asp-items="@(ViewBag.Estados as IEnumerable<SelectListItem>)">
-                    <option value="">Seleccione un estado</option>
+                    <option value="">@Localizer["Select_Status"]</option>
                 </select>
                 <span asp-validation-for="estado_id" class="text-danger-custom"></span>
             </div>
 
             <!-- Fecha Modificación -->
             <div class="form-group-custom">
-                <label asp-for="fecha_modificacion" class="form-label-custom">Fecha de registro</label>
+                <label asp-for="fecha_modificacion" class="form-label-custom">@Localizer["Label_Date"]</label>
                 <input asp-for="fecha_modificacion" type="date" class="form-control-custom" />
                 <span asp-validation-for="fecha_modificacion" class="text-danger-custom"></span>
             </div>
 
-            <!-- Descripción (Ocupa las 2 columnas) -->
+            <!-- Descripción -->
             <div class="form-group-custom form-group-full">
-                <label asp-for="descripcion"
-                       class="form-label-custom">Descripción detallada</label>
+                <label asp-for="descripcion" class="form-label-custom">@Localizer["Label_Description"]</label>
                 <div style="display: flex; gap: 10px;">
                     <textarea asp-for="descripcion" id="descripcion"
                               class="form-control-custom textarea-custom" rows="4"
-                              placeholder="Añade detalles técnicos..."></textarea>
+                              placeholder="@Localizer["Placeholder_Description"]"></textarea>
                     <button type="button"
                             onclick="sugerirDescripcionIA(this)"
-                            class="btn-secondary-custom" title="Sugerir con IA"
+                            class="btn-secondary-custom" title="@Localizer["Title_SuggestAI"]"
                             style="height: fit-content;">
                         ✨
                     </button>
                 </div>
-                <span asp-validation-for="descripcion"
-                      class="text-danger-custom"></span>
+                <span asp-validation-for="descripcion" class="text-danger-custom"></span>
             </div>
         </div>
 
         <div class="form-actions-footer">
-            <!-- BOTÓN BLOQUEADO (Llama al modal en vez de enviar el form) -->
             <button type="button" onclick="validarYMostrarModal()" class="btn-primary-custom btn-large">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                     <polyline points="17 21 17 13 7 13 7 21"></polyline>
                     <polyline points="7 3 7 8 15 8"></polyline>
                 </svg>
-                Guardar Herramienta
+                @Localizer["Btn_SaveTool"]
             </button>
         </div>
     </form>
@@ -127,9 +128,9 @@
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
         </div>
-        <h3 class="demo-title">Acción Bloqueada</h3>
-        <p class="demo-text">Estás viendo una versión <strong>Demo para Portfolio</strong>. Para proteger la integridad de los datos, la creación de registros está deshabilitada.</p>
-        <button type="button" onclick="cerrarModalDemo()" class="btn-primary-custom btn-demo-close">Entendido</button>
+        <h3 class="demo-title">@Localizer["Demo_Blocked"]</h3>
+        <p class="demo-text">@Html.Raw(Localizer["Demo_PortfolioText"])</p>
+        <button type="button" onclick="cerrarModalDemo()" class="btn-primary-custom btn-demo-close">@Localizer["Demo_Understood"]</button>
     </div>
 </div>
 
@@ -139,9 +140,8 @@
     }
     <script>
         function validarYMostrarModal() {
-            var form = $('#formDemo'); 
+            var form = $('#formDemo');
 
-            // Forzar a jQuery Validation a revisar los campos
             form.validate();
 
             if (form.valid()) {
@@ -157,7 +157,7 @@
             const nombre = $('#nombre').val();
 
             if (!nombre) {
-                alert("Coloque el nombre de la herramienta primero.");
+                alert("@Localizer["JS_NameRequiredAI"]");
                 return;
             }
 
@@ -171,11 +171,11 @@
                 if (data.descripcion) {
                     $('#descripcion').val(data.descripcion);
                 } else {
-                    alert("La IA no pudo generar una descripción. Probá con un nombre más claro.");
+                    alert("@Localizer["JS_AIFailed"]");
                 }
             } catch (error) {
                 console.error("Error llamando a la IA:", error);
-                alert("Ocurrió un error al intentar conectar con el servicio de IA.");
+                alert("@Localizer["JS_AIError"]");
             } finally {
                 btn.innerText = originalText;
             }

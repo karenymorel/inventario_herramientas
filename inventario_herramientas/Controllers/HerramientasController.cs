@@ -9,6 +9,8 @@ using Dapper;
 using inventario_herramientas.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization; // NUEVO: Para usar traducciones
+using System.Linq; // NUEVO: Para procesar los bytes del CSV
 
 namespace inventario_herramientas.Web.Controllers
 {
@@ -16,13 +18,17 @@ namespace inventario_herramientas.Web.Controllers
     {
         private readonly IHerramientasManager _herramientasManager;
         private readonly GeminiService _geminiService;
+        private readonly IStringLocalizer<SharedResource> _localizer; // NUEVO
 
-        // recordar: constructor inyecta manager
-        public HerramientasController(IHerramientasManager
-herramientasManager, GeminiService geminiService)
+        // recordatorio: constructor inyecta manager y localizador
+        public HerramientasController(
+            IHerramientasManager herramientasManager,
+            GeminiService geminiService,
+            IStringLocalizer<SharedResource> localizer) // NUEVO
         {
             _herramientasManager = herramientasManager;
             _geminiService = geminiService;
+            _localizer = localizer; // NUEVO
         }
 
         [Authorize]
@@ -53,7 +59,7 @@ herramientasManager, GeminiService geminiService)
                 _herramientasManager.CrearHerramienta(herramienta, idUsuarioActual);
                 return RedirectToAction("Index", "Home");
             }
-            CargarDatosDropdown(); 
+            CargarDatosDropdown();
             return View(herramienta);
         }
 
@@ -85,7 +91,7 @@ herramientasManager, GeminiService geminiService)
                 }
                 return NotFound();
             }
-            CargarDatosDropdown(); 
+            CargarDatosDropdown();
             return View(herramienta);
         }
 
@@ -100,10 +106,12 @@ herramientasManager, GeminiService geminiService)
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> SugerirDescripcion(string
-        nombre)
+        public async Task<IActionResult> SugerirDescripcion(string nombre)
         {
-            var descripcionSugerida = await _geminiService.GenerarDescripcion(nombre);
+            var prompt = string.Format(_localizer["Prompt_AI"], nombre);
+
+            var descripcionSugerida = await _geminiService.GenerarDescripcion(prompt);
+
             return Json(new { descripcion = descripcionSugerida });
         }
 
@@ -114,47 +122,61 @@ herramientasManager, GeminiService geminiService)
             var herramientas = _herramientasManager.GetHerramientas();
             var builder = new System.Text.StringBuilder();
 
-            // Encabezados del CSV
-            builder.AppendLine("ID,Nombre,Descripcion,Stock,Categoria_ID,Estado_ID,FechaModificacion");
+            // 1. Encabezados del CSV Traducidos
+            builder.AppendLine($"ID,{_localizer["Header_Name"]},{_localizer["Header_Description"]},{_localizer["Header_Stock"]},Categoria_ID,Estado_ID,{_localizer["Header_Modification"]}");
 
             foreach (var h in herramientas)
             {
-                // Limpiamos la descripción por si tiene comas que rompan el CSV
-                var descLimpia = string.IsNullOrEmpty(h.descripcion) ? "" : h.descripcion.Replace("\"", "\"\"").Replace("\n", " ");
+                // 2. Traducir Nombre y Descripción "al vuelo"
+                var nombreTraducido = _localizer[h.nombre ?? ""];
+                var descripcionTraducida = _localizer[h.descripcion ?? ""];
 
-                builder.AppendLine($"{h.id_herramienta},\"{h.nombre}\",\"{descLimpia}\",{h.cantidad},{h.categoria_id},{h.estado_id},{h.fecha_modificacion:yyyy-MM-dd}");
+                // Limpiamos la descripción traducida por si tiene comas o saltos de línea que rompan el CSV
+                var descLimpia = string.IsNullOrEmpty(descripcionTraducida)
+                    ? ""
+                    : descripcionTraducida.Value.Replace("\"", "\"\"").Replace("\n", " ");
+
+                builder.AppendLine($"{h.id_herramienta},\"{nombreTraducido}\",\"{descLimpia}\",{h.cantidad},{h.categoria_id},{h.estado_id},{h.fecha_modificacion:yyyy-MM-dd}");
             }
 
+            // 3. Agregar BOM para que Excel lea bien las tildes y las ñ
+            var bom = System.Text.Encoding.UTF8.GetPreamble();
             var fileBytes = System.Text.Encoding.UTF8.GetBytes(builder.ToString());
-            return File(fileBytes, "text/csv", "Reporte_Inventario_Data.csv");
+            var resultBytes = bom.Concat(fileBytes).ToArray();
+
+            // 4. Cambiar el nombre del archivo según el idioma
+            var currentCulture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
+            var fileName = currentCulture == "en-US" ? "Inventory_Data_Report.csv" : "Reporte_Inventario_Data.csv";
+
+            return File(resultBytes, "text/csv", fileName);
         }
 
         private void CargarDatosDropdown()
         {
-            // viewbag es mostrador de vista dinamico!
+            // Reutilizamos las claves que ya existen para los Estados
             ViewBag.Estados = new List<SelectListItem>
             {
-                // esto es lo que esta en la bbdd Estados
-                new SelectListItem { Value = "1", Text = "Disponible" },
-                new SelectListItem { Value = "2", Text = "En Uso" },
-                new SelectListItem { Value = "3", Text = "Dañada" },
-                new SelectListItem { Value = "4", Text = "En Reparación" }
+                new SelectListItem { Value = "1", Text = _localizer["Status_Available"] },
+                new SelectListItem { Value = "2", Text = _localizer["Status_InUse"] },
+                new SelectListItem { Value = "3", Text = _localizer["Status_Damaged"] },
+                new SelectListItem { Value = "4", Text = _localizer["Status_InRepair"] }
             };
 
+            // Envueltos en el localizador para poder traducirlos en el archivo .resx
             ViewBag.Ubicaciones = new List<SelectListItem>
             {
-                // idem para tabla Ubicaciones
-                new SelectListItem { Value = "1", Text = "Almacén Central" },
-                new SelectListItem { Value = "2", Text = "Taller" },
-                new SelectListItem { Value = "3", Text = "Obra 1" },
-                new SelectListItem { Value = "4", Text = "Obra 2" }
+                new SelectListItem { Value = "1", Text = _localizer["Almacén Central"] },
+                new SelectListItem { Value = "2", Text = _localizer["Taller"] },
+                new SelectListItem { Value = "3", Text = _localizer["Obra 1"] },
+                new SelectListItem { Value = "4", Text = _localizer["Obra 2"] }
             };
 
+            // Envueltos en el localizador
             ViewBag.Categorias = new List<SelectListItem>
             {
-                new SelectListItem { Value = "1", Text = "Eléctricas - Herramientas eléctricas y equipos motorizados" },
-                new SelectListItem { Value = "2", Text = "Manuales - Herramientas manuales, sin motor" },
-                new SelectListItem { Value = "3", Text = "Protección Personal - Equipos de protección y seguridad personal" }
+                new SelectListItem { Value = "1", Text = _localizer["Eléctricas - Herramientas eléctricas y equipos motorizados"] },
+                new SelectListItem { Value = "2", Text = _localizer["Manuales - Herramientas manuales, sin motor"] },
+                new SelectListItem { Value = "3", Text = _localizer["Protección Personal - Equipos de protección y seguridad personal"] }
             };
         }
     }
