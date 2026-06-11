@@ -1,16 +1,30 @@
 ﻿@model IEnumerable<inventario_herramientas.Managers.Entidades.Herramientas>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using inventario_herramientas.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "Listado de Herramientas";
+    ViewData["Title"] = Localizer["ListTitle"];
+
     var categorias = new Dictionary<int, string> {
-        { 1, "Eléctricas" }, { 2, "Manuales" }, { 3, "Protección Personal" }
+        { 1, Localizer["Category_Electric"] },
+        { 2, Localizer["Category_Manual"] },
+        { 3, Localizer["Category_PPE"] }
     };
 
     var ubicaciones = new Dictionary<int, string> {
-        { 1, "Compartimiento A" }, { 2, "Almacén B" }, { 3, "Taller Reparaciones" }, { 4, "Trabajo en Obra" }
+        { 1, Localizer["Location_CompA"] },
+        { 2, Localizer["Location_WarehouseB"] },
+        { 3, Localizer["Location_RepairShop"] },
+        { 4, Localizer["Location_Worksite"] }
     };
 
     var estados = new Dictionary<int, string> {
-        { 1, "Disponible" }, { 2, "En Uso" }, { 3, "Dañada" }, { 4, "En Reparación" }
+        { 1, Localizer["Status_Available"] },
+        { 2, Localizer["Status_InUse"] },
+        { 3, Localizer["Status_Damaged"] },
+        { 4, Localizer["Status_InRepair"] }
     };
 }
 
@@ -21,28 +35,28 @@
 <!-- Header de página -->
 <div class="page-header">
     <div class="page-header-info">
-        <h1 class="page-title">Herramientas</h1>
-        <p class="page-subtitle">Gestión completa del inventario disponible</p>
+        <h1 class="page-title">@Localizer["PageTitle"]</h1>
+        <p class="page-subtitle">@Localizer["PageSubtitle"]</p>
     </div>
     <div class="page-header-actions" style="display: flex; gap: 10px;">
 
-        <!-- Botón para ver Looker Studio (Poné tu link real después) -->
-        <a href="https://lookerstudio.google.com/" target="_blank" class="btn-dashboard" title="Ver Analíticas en Looker Studio">
+        <!-- Botón para ver Looker Studio -->
+        <a href="https://lookerstudio.google.com/" target="_blank" class="btn-dashboard" title="@Localizer["Title_DashboardBI"]">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-            Dashboard BI
+            @Localizer["DashboardBI"]
         </a>
 
         <!-- Botón para descargar el CSV de la base de datos -->
         <a asp-controller="Herramientas" asp-action="ExportarCSV" class="btn-success-custom">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            Exportar CSV
+            @Localizer["ExportCSV"]
         </a>
 
         @if (User.HasClaim("admin", "Administradora"))
         {
             <a asp-controller="Herramientas" asp-action="Create" class="btn-primary-custom">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                Nueva
+                @Localizer["NewTool"]
             </a>
         }
     </div>
@@ -60,7 +74,7 @@
             </svg>
         </div>
         <div class="stat-info">
-            <span class="stat-label">Total Modelos</span>
+            <span class="stat-label">@Localizer["TotalModels"]</span>
             <span class="stat-value">@Model.Count()</span>
         </div>
     </div>
@@ -74,7 +88,7 @@
             </svg>
         </div>
         <div class="stat-info">
-            <span class="stat-label">En Reparación</span>
+            <span class="stat-label">@Localizer["Status_InRepair"]</span>
             <span class="stat-value">@Model.Count(x => x.estado_id == 4)</span>
         </div>
     </div>
@@ -89,7 +103,7 @@
             </svg>
         </div>
         <div class="stat-info">
-            <span class="stat-label">Stock Crítico (< 5)</span>
+            <span class="stat-label">@Localizer["CriticalStock"]</span>
             <span class="stat-value">@Model.Count(x => x.cantidad < 5)</span>
         </div>
     </div>
@@ -102,7 +116,7 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="searchInput" class="form-control-custom input-with-icon" placeholder="Buscar por nombre, descripción, categoría o estado..." />
+        <input type="text" id="searchInput" class="form-control-custom input-with-icon" placeholder="@Localizer["SearchPlaceholder"]" />
     </div>
 </div>
 
@@ -112,14 +126,14 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Stock</th>
-                    <th>Categoría</th>
-                    <th>Ubicación</th>
-                    <th>Estado</th>
-                    <th>Modificación</th>
-                    <th class="th-actions">Acciones</th>
+                    <th>@Localizer["Header_Name"]</th>
+                    <th>@Localizer["Header_Description"]</th>
+                    <th>@Localizer["Header_Stock"]</th>
+                    <th>@Localizer["Header_Category"]</th>
+                    <th>@Localizer["Header_Location"]</th>
+                    <th>@Localizer["Header_Status"]</th>
+                    <th>@Localizer["Header_Modification"]</th>
+                    <th class="th-actions">@Localizer["Header_Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -127,30 +141,30 @@
                 {
                     <tr>
                         <td>
-                            <span class="cell-bold">@item.nombre</span>
+                            <span class="cell-bold">@Localizer[item.nombre ?? ""]</span>
                         </td>
-                        <td class="cell-muted" title="@item.descripcion">@item.descripcion</td>
+                        <td class="cell-muted" title="@Localizer[item.descripcion ?? ""]">@Localizer[item.descripcion ?? ""]</td>
                         <td>
                             <span class="badge-qty">@item.cantidad</span>
                         </td>
                         <td>
-                            <span class="text-category">@(categorias.ContainsKey(item.categoria_id) ? categorias[item.categoria_id] : "Otra")</span>
+                            <span class="text-category">@(categorias.ContainsKey(item.categoria_id) ? categorias[item.categoria_id] : Localizer["Category_Other"])</span>
                         </td>
                         <td class="cell-location">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-location">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>
                             </svg>
-                            @(ubicaciones.ContainsKey(item.ubicacion_id) ? ubicaciones[item.ubicacion_id] : "Desconocida")
+                            @(ubicaciones.ContainsKey(item.ubicacion_id) ? ubicaciones[item.ubicacion_id] : Localizer["Location_Unknown"])
                         </td>
                         <td>
                             @{
-                                var estadoNombre = estados.ContainsKey(item.estado_id) ? estados[item.estado_id] : "Desconocido";
+                                var estadoNombre = estados.ContainsKey(item.estado_id) ? estados[item.estado_id] : Localizer["Status_Unknown"];
                                 var claseColor = item.estado_id switch
                                 {
                                     1 => "status-success",
-                                    2 => "status-info",  
-                                    3 => "status-danger",  
+                                    2 => "status-info",
+                                    3 => "status-danger",
                                     4 => "status-warning",
                                     _ => "status-default"
                                 };
@@ -167,20 +181,20 @@
                                 <a href="javascript:void(0)"
                                    onclick="mostrarModalAuditoria('@item.NombreUsuarioAlta', '@(item.fechaAlta?.ToString("yyyy-MM-ddTHH:mm:ss"))', '@item.NombreUsuarioModificacion', '@(item.fechaModificacion?.ToString("yyyy-MM-ddTHH:mm:ss"))')"
                                    class="btn-action btn-audit"
-                                   title="Ver Auditoría">
+                                   title="@Localizer["Title_Audit"]">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                         <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                 </a>
 
-                                <a asp-action="Edit" asp-controller="Herramientas" asp-route-id="@item.id_herramienta" class="btn-action btn-edit" title="Editar">
+                                <a asp-action="Edit" asp-controller="Herramientas" asp-route-id="@item.id_herramienta" class="btn-action btn-edit" title="@Localizer["Title_Edit"]">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                     </svg>
                                 </a>
-                                <a href="javascript:void(0)" onclick="mostrarModalDemo()" class="btn-action btn-delete" title="Eliminar">
+                                <a href="javascript:void(0)" onclick="mostrarModalDemo()" class="btn-action btn-delete" title="@Localizer["Title_Delete"]">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="3 6 5 6 21 6" />
                                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
@@ -190,7 +204,7 @@
                                 </a>
                             </div>
                         </td>
-   
+
                     </tr>
                 }
             </tbody>
@@ -205,11 +219,11 @@
             <div class="stat-icon stat-blue" style="width: 40px; height: 40px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
             </div>
-            <h3 class="demo-title" style="margin: 0;">Registro de Auditoría</h3>
+            <h3 class="demo-title" style="margin: 0;">@Localizer["Audit_Title"]</h3>
         </div>
 
         <div style="margin-bottom: 20px;">
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Creado por</p>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">@Localizer["Audit_CreatedBy"]</p>
             <p style="font-size: 15px; color: var(--text-primary); margin: 0; display: flex; justify-content: space-between;">
                 <span id="auditCreador" style="font-weight: 500;"></span>
                 <span id="auditFechaCreacion" style="color: var(--text-secondary);"></span>
@@ -217,14 +231,14 @@
         </div>
 
         <div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Última Modificación por</p>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">@Localizer["Audit_LastModifiedBy"]</p>
             <p style="font-size: 15px; color: var(--text-primary); margin: 0; display: flex; justify-content: space-between;">
                 <span id="auditModificador" style="font-weight: 500;"></span>
                 <span id="auditFechaModificacion" style="color: var(--text-secondary);"></span>
             </p>
         </div>
 
-        <button onclick="cerrarModalAuditoria()" class="btn-secondary-custom" style="width: 100%; justify-content: center; margin-top: 32px;">Cerrar Historial</button>
+        <button onclick="cerrarModalAuditoria()" class="btn-secondary-custom" style="width: 100%; justify-content: center; margin-top: 32px;">@Localizer["Audit_Close"]</button>
     </div>
 </div>
 
@@ -237,9 +251,9 @@
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
         </div>
-        <h3 class="demo-title">Acción Bloqueada</h3>
-        <p class="demo-text">Estás viendo una versión <strong>Demo</strong>. Para proteger la integridad de los datos, ciertas funciones están deshabilitadas.</p>
-        <button onclick="cerrarModalDemo()" class="btn-primary-custom btn-demo-close">Aceptar</button>
+        <h3 class="demo-title">@Localizer["Demo_Blocked"]</h3>
+        <p class="demo-text">@Html.Raw(Localizer["Demo_Text"])</p>
+        <button onclick="cerrarModalDemo()" class="btn-primary-custom btn-demo-close">@Localizer["Demo_Accept"]</button>
     </div>
 </div>
 
@@ -264,13 +278,13 @@
         });
 
         function mostrarModalAuditoria(creador, fechaCreacion, modificador, fechaMod) {
-            const fCreacion = (fechaCreacion && fechaCreacion !== "") ? new Date(fechaCreacion).toLocaleString() : "Sin fecha";
-            const fMod = (fechaMod && fechaMod !== "") ? new Date(fechaMod).toLocaleString() : "Sin modificaciones";
+            const fCreacion = (fechaCreacion && fechaCreacion !== "") ? new Date(fechaCreacion).toLocaleString() : "@Localizer["JS_NoDate"]";
+            const fMod = (fechaMod && fechaMod !== "") ? new Date(fechaMod).toLocaleString() : "@Localizer["JS_NoModifications"]";
 
-            document.getElementById('auditCreador').innerText = creador || 'Sistema';
+            document.getElementById('auditCreador').innerText = creador || '@Localizer["JS_System"]';
             document.getElementById('auditFechaCreacion').innerText = fCreacion;
 
-            document.getElementById('auditModificador').innerText = modificador || 'N/A';
+            document.getElementById('auditModificador').innerText = modificador || '@Localizer["JS_NA"]';
             document.getElementById('auditFechaModificacion').innerText = fMod;
 
             document.getElementById('modalAuditoria').classList.add('show');
